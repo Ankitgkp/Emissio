@@ -27,3 +27,9 @@ export class SmtpError extends AppError {
         super(message, 502);
     }
 }
+
+export class RateLimitError extends AppError {
+    constructor(message = "Too many requests") {
+        super(message, 429);
+    }
+}
