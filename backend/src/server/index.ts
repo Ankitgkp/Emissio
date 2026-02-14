@@ -1,14 +1,15 @@
-import express from "express";
-
+import express from 'express';
+import v1Routes from '../routes/v1.routes';
 const app = express();
-const PORT = process.env.PORT || 3000;
+app.use(express.json());
 
-app.get("/", (_req, res) => {
-  res.send("Hello from Emissio backend");
+
+app.use('/v1', v1Routes);
+
+
+
+app.listen(3000, () => {
+    console.log(`Server running on port 3000`);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-export default app;87
+export default app;
