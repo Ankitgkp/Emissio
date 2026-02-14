@@ -1,21 +1,20 @@
-// For now: accept email data from controller, return a dummy success result
+
+import { send } from "../infrastructure/smtp/smtpClient";
+import { SmtpError } from "../errors/AppError";
 
 interface EmailData {
     to: string;
     subject: string;
-    body: string;
+    content: string;
 }
 
-interface EmailResult {
-    success: boolean;
-    message: string;
-}
+export const sendEmail = async (data: EmailData): Promise<string> => {
+    const result = await send(data);
 
-export const sendEmail = async (data: EmailData): Promise<EmailResult> => {
-    // TODO: Real email sending logic will go here
-    return {
-        success: true,
-        message: "Email sent successfully (dummy)",
-    };
+    if (!result.success) {
+        throw new SmtpError(result.error || "Failed to send email");
+    }
+
+    return result.messageId!;
 };
 
