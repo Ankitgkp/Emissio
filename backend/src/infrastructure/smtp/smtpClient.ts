@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { env } from "../../config/env";
+import { logger } from "../../utils/logger";
 
 interface SmtpPayload {
     to: string;
@@ -32,12 +33,23 @@ export const send = async (payload: SmtpPayload): Promise<SmtpResult> => {
             text: payload.content,
         });
 
+        logger.info("smtp_send_success", {
+            to: payload.to,
+            messageId: info.messageId,
+        });
+
         return {
             success: true,
             messageId: info.messageId,
         };
     } catch (err) {
         const message = err instanceof Error ? err.message : "Unknown SMTP error";
+
+        logger.error("smtp_send_failure", {
+            to: payload.to,
+            error: message,
+        });
+
         return {
             success: false,
             error: message,

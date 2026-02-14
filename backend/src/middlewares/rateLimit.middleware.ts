@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { RateLimitError } from "../errors/AppError";
+import { logger, maskApiKey } from "../utils/logger";
 
 const MAX_REQUESTS = 10;       
 const WINDOW_MS = 60 * 1000; 
@@ -18,6 +19,13 @@ export const rateLimit = (req: Request, res: Response, next: NextFunction) => {
     client.count++;
     if (client.count > MAX_REQUESTS) {
         const retryAfterSec = Math.ceil((client.windowStart + WINDOW_MS - now) / 1000);
+
+        logger.warn("rate_limit_exceeded", {
+            apiKey: maskApiKey(apiKey),
+            count: client.count,
+            windowSec: WINDOW_MS / 1000,
+        });
+
         throw new RateLimitError(`Rate limit exceeded. Try again in ${retryAfterSec}s`);
     }
     next();
