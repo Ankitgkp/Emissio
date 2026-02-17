@@ -8,7 +8,9 @@ function Footer() {
           <span className="footer-logo">✉</span>
           <span>Emissio: Ultimate Mail</span>
         </div>
-        <p className="footer-tagline">Simple, fast, developer-friendly email delivery.</p>
+        <p className="footer-tagline">
+          Simple, fast, developer-friendly email delivery.
+        </p>
         <div className="footer-divider" />
         <div className="footer-bottom">
           <span>Emissio</span>
