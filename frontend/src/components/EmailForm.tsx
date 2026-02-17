@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import Toast from "./Toast";
 import "./EmailForm.css";
 
 function EmailForm() {
@@ -8,11 +9,6 @@ function EmailForm() {
   const [content, setContent] = useState("");
   const [sending, setSending] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-
-  function showToast(message: string, type: "success" | "error") {
-    setToast({ message, type });
-    setTimeout(() => setToast(null), 3500);
-  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -31,15 +27,15 @@ function EmailForm() {
       const data = await res.json();
 
       if (res.ok) {
-        showToast(data.message || "Email sent!", "success");
+        setToast({ message: data.message || "Email sent!", type: "success" });
         setTo("");
         setSubject("");
         setContent("");
       } else {
-        showToast(data.message || "Failed to send email", "error");
+        setToast({ message: data.message || "Failed to send email", type: "error" });
       }
     } catch {
-      showToast("Network error — is the server running?", "error");
+      setToast({ message: "Network error — is the server running?", type: "error" });
     } finally {
       setSending(false);
     }
@@ -97,7 +93,7 @@ function EmailForm() {
         </button>
       </form>
       {toast && (
-        <div className={`toast ${toast.type}`}>{toast.message}</div>
+        <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
       )}
     </div>
   );

@@ -72,37 +72,3 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
-
-.toast {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 14px;
-  max-width: 360px;
-  animation: slideIn 0.3s ease;
-}
-
-.toast.success {
-  background: #052e16;
-  border: 1px solid #166534;
-  color: #4ade80;
-}
-
-.toast.error {
-  background: #2a0a0a;
-  border: 1px solid #7f1d1d;
-  color: #f87171;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
